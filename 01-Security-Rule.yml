@@ -1,40 +1,28 @@
 ---
-- name: Add security rule to PAN-OS device
-  hosts: paloalto_fw01
-  gather_facts: no
+- name: Gather security rules
+  hosts: palo_firewall
+  connection: httpapi
+  gather_facts: false
+
+  vars:
+    device:
+      ip_address: "{{ ansible_host }}"
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
+
   tasks:
-  - name: Prompt for rule name
-    ansible.builtin.prompt:
-      name: "rule_name"
-      prompt: "Enter the rule name"
+    - name: Get all security rules
+      paloaltonetworks.panos.panos_security_rule:
+        provider: "{{ device }}"
+        gathered_filter: "*"
+        state: gathered
+      register: sec_rules
 
-  - name: Prompt for source IP
-    ansible.builtin.prompt:
-      name: "source_ip"
-      prompt: "Enter the source IP"
+    - name: Output
+      ansible.builtin.debug:
+        msg: "{{ sec_rules.gathered }}"
 
-  - name: Prompt for destination IP
-    ansible.builtin.prompt:
-      name: "destination_ip"
-      prompt: "Enter the destination IP"
+    - name: Output rule names
+      ansible.builtin.debug:
+        msg: "List of rules {{ sec_rules.gathered | map(attribute='rule_name') | list }}"
 
-  - name: Prompt for service (application)
-    ansible.builtin.prompt:
-      name: "application"
-      prompt: "Enter the service (application)"
-
-  - name: Add security rule
-    panos_security_rule:
-      ip_address: "{{ ip_address }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      rule_name: "{{ rule_name }}"
-      rule_type: "allow"
-      source_zone: "any"
-      destination_zone: "any"
-      source_ip: "{{ source_ip }}"
-      destination_ip: "{{ destination_ip }}"
-      application: "{{ application }}"
-      action: "allow"
-
-...
