@@ -1,0 +1,10 @@
+---
+- name: Commit configuration changes to PAN-OS device
+  hosts: paloalto_fw01
+  gather_facts: no
+  tasks:
+  - name: Commit changes
+    panos_commit:
+      ip_address: "{{ ip_address }}"
+      username: "{{ username }}"
+      password: "{{ password }}"

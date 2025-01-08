@@ -1,0 +1,38 @@
+---
+- name: Add security rule to PAN-OS device
+  hosts: paloalto_fw01
+  gather_facts: no
+  tasks:
+  - name: Prompt for rule name
+    ansible.builtin.prompt:
+      name: "rule_name"
+      prompt: "Enter the rule name"
+
+  - name: Prompt for source IP
+    ansible.builtin.prompt:
+      name: "source_ip"
+      prompt: "Enter the source IP"
+
+  - name: Prompt for destination IP
+    ansible.builtin.prompt:
+      name: "destination_ip"
+      prompt: "Enter the destination IP"
+
+  - name: Prompt for service (application)
+    ansible.builtin.prompt:
+      name: "application"
+      prompt: "Enter the service (application)"
+
+  - name: Add security rule
+    panos_security_rule:
+      ip_address: "{{ ip_address }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      rule_name: "{{ rule_name }}"
+      rule_type: "allow"
+      source_zone: "any"
+      destination_zone: "any"
+      source_ip: "{{ source_ip }}"
+      destination_ip: "{{ destination_ip }}"
+      application: "{{ application }}"
+      action: "allow"
