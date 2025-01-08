@@ -24,5 +24,4 @@
 
     - name: Output rule names
       ansible.builtin.debug:
-        msg: "List of rules {{ sec_rules.gathered | map(attribute='rule_name') | list }}"
-
+      msg: "List of rules {{ sec_rules.gathered | map(attribute='rule_name') | list }}"

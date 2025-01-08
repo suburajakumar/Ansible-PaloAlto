@@ -1,31 +1,20 @@
 ---
-- name: Gather system info
-  hosts: paloalto_fw01
+- name: Create Address Object in Palo Alto via Ansible
+  hosts: palo_firewall
   connection: httpapi
-
   vars:
-    device:
-      ip_address: "{{ ip_address }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-
+    provider:
+      ip_address: "{{ ansible_host }}"
+      api_key: "{{ api_key }}"
   tasks:
-    - name: Gather facts for device
+    - name: Get facts
       paloaltonetworks.panos.panos_facts:
-        provider: "{{ device }}"
+        provider: "{{ provider }}"
+        gather_subset: ['config']
+      register: result
 
-    - name: Display information
-      ansible.builtin.debug:
-        msg:
-          - "Hostname: {{ ansible_facts['net_hostname'] }}"
-          - "Serial: {{ ansible_facts['net_serial'] }}"
-          - "Model: {{ ansible_facts['net_model'] }}"
-          - "Version: {{ ansible_facts['net_version'] }}"
-          - "Uptime: {{ ansible_facts['net_uptime'] }}"
-          - "HA Enabled: {{ ansible_facts['net_ha_enabled'] }}"
-          - "HA Type: {{ ansible_facts['net_ha_localmode'] }}"
-          - "HA Status: {{ ansible_facts['net_ha_localstate'] }}"
-          - "Multi-VSYS: {{ ansible_facts['net_multivsys'] }}"
-          - "{{ ansible_facts['net_session_usage'] }} out of {{ ansible_facts['net_session_max'] }} sessions in use"
-
-...
+    - name: Save info to file
+      local_action:
+        module: copy
+        content: "{{ result }}"
+        dest: ./panos_info.txt
