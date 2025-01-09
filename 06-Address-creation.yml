@@ -1,0 +1,31 @@
+---
+- name: Create Address Object in Palo Alto via Ansible
+  hosts: palo_firewall
+  connection: local
+  vars_prompt:
+    - name: "object_name"
+      prompt: "Enter the name of the address object"
+      private: false
+    - name: "address_type"
+      prompt: | 
+            "Enter the type of the address object"
+            "Hint: ip-netmask/ip-range/fqdn"
+      private: false
+    - name: "object_ip"
+      prompt: "Enter the IP address of the object"
+      private: false
+    - name: "object_description"
+      prompt: "Enter the description of the object"
+      private: false
+  vars:
+    provider:
+      ip_address: "{{ ansible_host }}"
+      api_key: " {{ api_key }} "
+  tasks:
+    - name: Create address object
+      paloaltonetworks.panos.panos_address_object:
+        provider: "{{ provider }}"
+        name: "{{ object_name }}"
+        value: "{{ object_ip }}"
+        address_type: "{{ address_type }}"
+        description: "{{ object_description }}"
