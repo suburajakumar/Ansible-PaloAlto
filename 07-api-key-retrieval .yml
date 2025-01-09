@@ -1,0 +1,20 @@
+---
+- name: Create Address Object in Palo Alto via Ansible
+  hosts: palo_firewall
+  connection: httpapi
+  gather_facts: false
+  
+  vars:
+    provider:
+      ip_address: "{{ ansible_host }}"
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
+
+  tasks:
+    - name: retrieve api_key
+      paloaltonetworks.panos.panos_api_key:
+        provider: '{{ provider }}'
+      register: auth
+
+    - debug:
+        msg: '{{ auth.api_key }}'
