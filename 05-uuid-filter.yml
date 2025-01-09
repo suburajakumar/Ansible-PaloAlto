@@ -4,6 +4,11 @@
   connection: httpapi
   gather_facts: false
 
+  vars_prompt:
+    - name: "target_rule_name"
+      prompt: "Please enter the rule name:"
+      private: false  # Set to 'yes' if you want the input to be hidden
+
   vars:
     device:
       ip_address: "{{ ansible_host }}"
@@ -18,10 +23,8 @@
         state: gathered
       register: sec_rules
 
-    - name: Output
+    - name: Output UUID for specific rule
       ansible.builtin.debug:
-        msg: "{{ sec_rules.gathered }}"
-
-    - name: Output rule names
-      ansible.builtin.debug:
-        msg: "List of rules {{ sec_rules.gathered | map(attribute='rule_name') | list }}"
+        msg: >
+          "UUID of requested rule {{ target_rule_name }} is:
+          {{ (sec_rules.gathered | selectattr('rule_name', 'equalto', target_rule_name) | map(attribute='uuid') | list) }}"
