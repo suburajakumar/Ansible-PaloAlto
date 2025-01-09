@@ -1,7 +1,9 @@
 ---
 - name: Create Address Object in Palo Alto via Ansible
   hosts: palo_firewall
-  connection: local
+  connection: httpapi
+  gather_facts: false
+  
   vars_prompt:
     - name: "object_name"
       prompt: "Enter the name of the address object"

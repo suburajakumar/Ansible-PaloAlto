@@ -1,7 +1,8 @@
 ---
 - name: Create Address Object in Palo Alto via Ansible
   hosts: palo_firewall
-  connection: local
+  connection: httpapi
+  gather_facts: false
   vars:
     provider:
       ip_address: "{{ ansible_host }}"
