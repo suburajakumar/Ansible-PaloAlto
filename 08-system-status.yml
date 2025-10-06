@@ -1,0 +1,14 @@
+---
+- name: 🤖 Get System Status for Palo Alto Devices
+  # ALWAYS define the target group for clarity and safety
+  #hosts: pa_group 
+  # ALWAYS define the required connection type for network modules
+  connection: local 
+  gather_facts: false
+
+  tasks:
+    - name: Run 'show system status' operational command via API
+      paloaltonetworks.panos.panos_op:
+        provider: "{{ provider }}" 
+        cmd: 'show system status'
+      # ... rest of the tasks
