@@ -1,16 +1,18 @@
 ---
-- name: Run show system state using CLI
+- name: Run 'show system state' via CLI using panos_op
   hosts: paloalto_devices
-  gather_facts: false
+  gather_facts: no
   collections:
     - paloaltonetworks.panos
   vars:
     ansible_network_os: paloaltonetworks.panos.panos
     ansible_connection: network_cli
   tasks:
-    - panos_cli:
-        cli: show system state
+    - name: Run system state command
+      panos_op:
+        cmd: show system state
       register: output
 
-    - debug:
-        var: output.stdout_lines
+    - name: Show output
+      debug:
+        var: output.stdout
