@@ -1,6 +1,6 @@
 ---
 - name: Run 'show system state' via CLI using panos_op
-  hosts: paloalto_devices
+  hosts: pa_fws
   gather_facts: no
   collections:
     - paloaltonetworks.panos
