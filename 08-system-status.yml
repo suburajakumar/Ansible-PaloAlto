@@ -17,21 +17,25 @@
         cmd: show system state
       register: system_state_output
 
-    - name: Show system state output
+    - name: Show system state output raw
       debug:
         var: system_state_output.stdout
 
+    - name: Parse system state output JSON string
+      set_fact:
+        parsed_output: "{{ system_state_output.stdout | from_json }}"
+
     - name: Show system state output prettified
       debug:
-        msg: "{{ system_state_output.stdout | to_nice_json }}"
+        msg: "{{ parsed_output | to_nice_json }}"
 
     - name: Extract software version
       debug:
-        msg: "Software Version: {{ system_state_output.stdout.response.result['local.sw_version'] }}"
+        msg: "Software Version: {{ parsed_output.response.result['local.sw_version'] }}"
 
     - name: Extract model and sw_version using json_query
       set_fact:
-        palo_info: "{{ system_state_output.stdout | json_query('response.result.local.{model: model, sw_version: sw_version}') }}"
+        palo_info: "{{ parsed_output | json_query('response.result.local.{model: model, sw_version: sw_version}') }}"
 
     - name: Display model and software version
       debug:
