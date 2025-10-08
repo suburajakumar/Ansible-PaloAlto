@@ -1,21 +1,23 @@
 ---
-- name: Create Address Object in Palo Alto via Ansible
-  hosts: palo_firewall
+- name: Show system status on Palo Alto Firewall via HTTPAPI with username/password
+  hosts: pa_fws
+  gather_facts: no
   connection: httpapi
-  gather_facts: false
+  collections:
+    - paloaltonetworks.panos
   vars:
     provider:
       ip_address: "{{ ansible_host }}"
-      api_key: "{{ api_key }}"
-  tasks:
-    - name: Get facts
-      paloaltonetworks.panos.panos_facts:
-        provider: "{{ provider }}"
-        gather_subset: ['config']
-      register: result
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
 
-    - name: Save info to file
-      local_action:
-        module: copy
-        content: "{{ result }}"
-        dest: ./panos_info.txt
+  tasks:
+    - name: Get the system info
+      paloaltonetworks.panos.panos_op:
+        provider: "{{ provider }}"
+        cmd: show system info
+      register: res
+
+    - name: Show the system info
+      ansible.builtin.debug:
+        msg: "{{ res.stdout }}"
