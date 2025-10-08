@@ -1,0 +1,21 @@
+
+---
+- name: Show system status on Palo Alto Firewall via HTTPAPI with username/password
+  hosts: pa_fws
+  gather_facts: no
+  connection: httpapi
+  collections:
+    - paloaltonetworks.panos
+  vars:
+    provider:
+      ip_address: "{{ ansible_host }}"
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
+  tasks:
+    - name: Check if a node is active in HA pair
+      panos_active_in_ha:
+        provider: '{{ provider }}'
+      register: active_ha
+    - name: Run tasks dedicated to active node
+      ansible.builtin.include_tasks: active_dedicated.yml
+      when: active_ha.response.active
