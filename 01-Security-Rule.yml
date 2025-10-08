@@ -1,6 +1,6 @@
 ---
 - name: Gather security rules
-  hosts: palo_firewall
+  hosts: pa_fws
   connection: httpapi
   gather_facts: false
 
