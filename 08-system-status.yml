@@ -29,10 +29,6 @@
       debug:
         msg: "{{ parsed_output | to_nice_json }}"
 
-    - name: Extract software version
-      debug:
-        msg: "Software Version: {{ parsed_output.response.result['local.sw_version'] }}"
-
     - name: Extract model and sw_version using json_query
       set_fact:
         palo_info: "{{ parsed_output | json_query('response.result.local.{model: model, sw_version: sw_version}') }}"
