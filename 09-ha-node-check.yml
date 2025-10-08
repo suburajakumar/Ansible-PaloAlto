@@ -17,5 +17,5 @@
         provider: '{{ provider }}'
       register: active_ha
     - name: Run tasks dedicated to active node
-      ansible.builtin.include_tasks: active_dedicated.yml
+      #ansible.builtin.include_tasks: active_dedicated.yml
       when: active_ha.response.active
