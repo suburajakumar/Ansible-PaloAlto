@@ -1,17 +1,16 @@
 ---
-
 - name: Show system status on Palo Alto Firewall via HTTPAPI with username/password
   hosts: pa_fws
   gather_facts: no
   connection: httpapi
+  collections:
+    - paloaltonetworks.panos
   tasks:
     - name: Run 'show system state' command via API
-      paloaltonetworks.panos.panos_op::
+      paloaltonetworks.panos.panos_op:
         cmd: show system state
       register: system_state_output
 
     - name: Show system state output
       debug:
         var: system_state_output.stdout
-
-
