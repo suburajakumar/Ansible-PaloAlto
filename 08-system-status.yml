@@ -1,22 +1,14 @@
----
-- name: Show system status on Palo Alto Firewall via HTTPAPI with username/password
-  hosts: pa_fws
+- hosts: pa_fws
   gather_facts: no
   connection: httpapi
   collections:
     - paloaltonetworks.panos
   vars:
-    provider:
-      ip_address: "{{ ansible_host }}"
-      #username: "{{ ansible_user }}"
-      #password: "{{ ansible_password }}"
+    ansible_network_os: paloaltonetworks.panos
   tasks:
-    - name: Run 'show system state' command via API
-      paloaltonetworks.panos.panos_op:
-        provider: "{{ provider }}"
+    - paloaltonetworks.panos.panos_op:
         cmd: show system state
-      register: system_state_output
+      register: output
 
-    - name: Show system state output
-      debug:
-        var: system_state_output.stdout
+    - debug:
+        var: output.stdout
