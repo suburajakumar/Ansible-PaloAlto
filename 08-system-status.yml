@@ -1,18 +1,16 @@
 ---
-- name: Show system state on Palo Alto Firewall
-  hosts: pa_fws
-  gather_facts: no
+- name: Run show system state using CLI
+  hosts: paloalto_devices
+  gather_facts: false
   collections:
     - paloaltonetworks.panos
   vars:
     ansible_network_os: paloaltonetworks.panos.panos
     ansible_connection: network_cli
   tasks:
-    - name: Get system state
-      panos_op:
-        cmd: show system state
-      register: system_state_output
+    - panos_cli:
+        cli: show system state
+      register: output
 
-    - name: Display system state output
-      debug:
-        var: system_state_output.stdout
+    - debug:
+        var: output.stdout_lines
