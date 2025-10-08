@@ -6,7 +6,7 @@
   connection: httpapi
   tasks:
     - name: Run 'show system state' command via API
-      panos_op:
+      paloaltonetworks.panos.panos_op::
         cmd: show system state
       register: system_state_output
 
