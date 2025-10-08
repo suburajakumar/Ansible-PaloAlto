@@ -16,7 +16,6 @@
         provider: '{{ provider }}'
         source_ip: '{{ source_ip }}'
         destination_ip: '{{ destination_ip }}'
-        application: '{{ application }}'
         destination_port: '{{ destination_port }}'
         protocol: '{{ protocol }}'
       register: result
