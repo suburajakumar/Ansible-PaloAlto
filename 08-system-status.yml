@@ -20,3 +20,7 @@
     - name: Show system state output
       debug:
         var: system_state_output.stdout
+
+    - debug:
+        msg: "Software Version: {{ system_state_output.stdout.response.result['local.sw_version'] }}"
+
