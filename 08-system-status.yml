@@ -1,19 +1,21 @@
 ---
-- name: Get system status on Palo Alto Firewall
+
+- name: Show system status on Palo Alto Firewall via HTTPAPI with username/password
   hosts: pa_fws
-  gather_facts: false
+  gather_facts: no
   collections:
     - paloaltonetworks.panos
   vars:
     ansible_network_os: paloaltonetworks.panos
-    ansible_connection: network_cli
+    ansible_connection: httpapi
   tasks:
-    - name: Run show system state command
+    - name: Run 'show system state' command via API
       panos_op:
         cmd: show system state
-      register: system_state
+      register: system_state_output
 
-    - name: Display output
+    - name: Show system state output
       debug:
-        var: system_state.stdout
+        var: system_state_output.stdout
+
 
