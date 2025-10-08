@@ -21,6 +21,18 @@
       debug:
         var: system_state_output.stdout
 
-    - debug:
+    - name: Show system state output prettified
+      debug:
+        msg: "{{ system_state_output.stdout | to_nice_json }}"
+
+    - name: Extract software version
+      debug:
         msg: "Software Version: {{ system_state_output.stdout.response.result['local.sw_version'] }}"
 
+    - name: Extract model and sw_version using json_query
+      set_fact:
+        palo_info: "{{ system_state_output.stdout | json_query('response.result.local.{model: model, sw_version: sw_version}') }}"
+
+    - name: Display model and software version
+      debug:
+        msg: "Model: {{ palo_info.model }}, Software Version: {{ palo_info.sw_version }}"
