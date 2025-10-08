@@ -1,5 +1,5 @@
 ---
-- name: Show system status on Palo Alto Firewall
+- name: Show system state on Palo Alto Firewall
   hosts: pa_fws
   gather_facts: no
   collections:
@@ -8,9 +8,9 @@
     ansible_network_os: paloaltonetworks.panos.panos
     ansible_connection: network_cli
   tasks:
-    - name: Get system status
+    - name: Get system state
       panos_op:
-        cmd: show system status
+        cmd: show system state
       register: system_state_output
 
     - name: Display system state output
