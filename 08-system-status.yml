@@ -5,9 +5,15 @@
   connection: httpapi
   collections:
     - paloaltonetworks.panos
+  vars:
+    provider:
+      ip_address: "{{ ansible_host }}"
+      #username: "{{ ansible_user }}"
+      #password: "{{ ansible_password }}"
   tasks:
     - name: Run 'show system state' command via API
       paloaltonetworks.panos.panos_op:
+        provider: "{{ provider }}"
         cmd: show system state
       register: system_state_output
 
