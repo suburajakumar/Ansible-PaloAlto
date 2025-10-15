@@ -23,8 +23,6 @@
     
     - name: Show CPU usage
       debug:
-        msg: "CPU usage: {{ panos_data.system_info.cpu_usage }}"
-    
-    - name: Show session count
-      debug:
-        msg: "Session count: {{ panos_data.system_info.session_count }}"
+        msg: 
+          - "Hostname: {{ panos_data.system.ansible_net_hostname }}"
+
