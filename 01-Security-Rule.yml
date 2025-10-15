@@ -11,16 +11,17 @@
       password: "{{ ansible_password }}"
 
   tasks:
-    - name: Get system facts (CPU and session count)
-      paloaltonetworks.panos.panos_facts:
-        provider: "{{ provider }}"
-        gather_subset: ['system']
-      register: panos_data
-    
-    - name: Show CPU usage
-      debug:
-        msg: "CPU usage: {{ panos_data.system_info.cpu_usage }}"
-    
-    - name: Show session count
-      debug:
-        msg: "Session count: {{ panos_data.system_info.session_count }}"
+    - name: Get all security rules
+      paloaltonetworks.panos.panos_security_rule:
+        provider: "{{ device }}"
+        gathered_filter: "*"
+        state: gathered
+      register: sec_rules
+
+    - name: Output
+      ansible.builtin.debug:
+        msg: "{{ sec_rules.gathered }}"
+
+    - name: Output rule names
+      ansible.builtin.debug:
+        msg: "List of rules {{ sec_rules.gathered | map(attribute='rule_name') | list }}"

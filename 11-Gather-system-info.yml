@@ -13,17 +13,16 @@
       password: "{{ ansible_password }}"
       
   tasks:
-    - name: Gather facts for device
+    - name: Get system facts (CPU and session count)
       paloaltonetworks.panos.panos_facts:
         provider: "{{ provider }}"
-        gather_subset:
-          - system
+        gather_subset: ['system']
       register: panos_data
-
-    - name: Inspect full output structure
-      ansible.builtin.debug:
-        var: panos_data
-
-    - name: Show CPU usage only
-      ansible.builtin.debug:
+    
+    - name: Show CPU usage
+      debug:
         msg: "CPU usage: {{ panos_data.system_info.cpu_usage }}"
+    
+    - name: Show session count
+      debug:
+        msg: "Session count: {{ panos_data.system_info.session_count }}"
