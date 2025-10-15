@@ -1,0 +1,28 @@
+---
+- name: Gather system info
+  hosts: pa_fws
+  connection: httpapi
+  gather_facts: false
+
+  vars:
+    provider:
+      ip_address: "{{ ansible_host }}"
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
+      
+  tasks:
+    - name: Gather facts for device
+      paloaltonetworks.panos.panos_facts:
+        provider: "{{ device }}"
+
+    - name: Display information
+      ansible.builtin.debug:
+        msg:
+          - "Hostname: {{ ansible_facts.net_hostname }}"
+          - "Serial: {{ ansible_facts.net_serial }}"
+          - "Model: {{ ansible_facts.net_model }}"
+          - "Version: {{ ansible_facts.net_version }}"
+          - "Uptime: {{ ansible_facts.net_uptime }}"
+          - "CPU Usage: {{ ansible_facts.net_cpu_usage }}"
+          - "Memory Usage: {{ ansible_facts.net_mem_usage }}"
+          - "Session Usage: {{ ansible_facts.net_session_usage }} / {{ ansible_facts.net_session_max }}"
