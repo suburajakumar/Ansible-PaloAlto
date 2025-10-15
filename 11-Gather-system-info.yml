@@ -16,16 +16,10 @@
     - name: Gather facts for device
       paloaltonetworks.panos.panos_facts:
         provider: "{{ provider }}"
-        gather_subset: ['config']
-        
-    - name: Display information
-      ansible.builtin.debug:
-        msg:
-          - "Hostname: {{ ansible_facts.net_hostname }}"
-          - "Serial: {{ ansible_facts.net_serial }}"
-          - "Model: {{ ansible_facts.net_model }}"
-          - "Version: {{ ansible_facts.net_version }}"
-          - "Uptime: {{ ansible_facts.net_uptime }}"
-          - "CPU Usage: {{ ansible_facts.net_cpu_usage }}"
-          - "Memory Usage: {{ ansible_facts.net_mem_usage }}"
-          - "Session Usage: {{ ansible_facts.net_session_usage }} / {{ ansible_facts.net_session_max }}"
+        gather_subset:
+          - system
+      register: panos_data
+
+    - name: Show CPU usage only
+      debug:
+        msg: "CPU usage: {{ panos_data.facts.system.cpu_usage }}"
