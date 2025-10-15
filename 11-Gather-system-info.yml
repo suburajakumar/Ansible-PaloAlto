@@ -13,7 +13,7 @@
       password: "{{ ansible_password }}"
       
   tasks:
-    - name: Get system facts (CPU and session count)
+    - name: Get system facts
       paloaltonetworks.panos.panos_facts:
         provider: "{{ provider }}"
         gather_subset:
