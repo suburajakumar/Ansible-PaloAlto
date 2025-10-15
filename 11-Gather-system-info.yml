@@ -3,7 +3,9 @@
   hosts: pa_fws
   connection: httpapi
   gather_facts: false
-
+  collections:
+    - paloaltonetworks.panos
+    
   vars:
     provider:
       ip_address: "{{ ansible_host }}"
