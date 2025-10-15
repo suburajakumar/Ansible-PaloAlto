@@ -1,12 +1,13 @@
 ---
 - name: Create Address Object in Palo Alto via Ansible
-  hosts: palo_firewall
+  hosts: pa_fws
   connection: httpapi
   gather_facts: false
   vars:
     provider:
       ip_address: "{{ ansible_host }}"
-      api_key: " {{ api_key }} "
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
   tasks:
     - name: Commit candidate configs on firewall
       paloaltonetworks.panos.panos_commit_firewall:

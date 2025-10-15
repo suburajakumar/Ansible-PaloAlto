@@ -1,0 +1,22 @@
+---
+- name: Gather security rules
+  hosts: pa_fws
+  connection: httpapi
+  gather_facts: false
+
+  vars:
+    provider:
+      ip_address: "{{ ansible_host }}"
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
+
+  tasks:
+    - name: check security rules
+      paloaltonetworks.panos.panos_match_rule:
+        provider: '{{ provider }}'
+        source_ip: '{{ source_ip }}'
+        destination_ip: '{{ destination_ip }}'
+        destination_port: '{{ destination_port }}'
+        protocol: '{{ protocol }}'
+      register: result
+    - debug: msg='{{ result.rule }}'

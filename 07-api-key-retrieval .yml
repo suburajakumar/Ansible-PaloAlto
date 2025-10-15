@@ -1,6 +1,6 @@
 ---
-- name: Create Address Object in Palo Alto via Ansible
-  #hosts: palo_firewall
+- name: Create Address Object in Palo Alto via Ansible. ## test
+  hosts: pa_fws
   connection: httpapi
   gather_facts: false
   

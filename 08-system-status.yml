@@ -1,14 +1,34 @@
 ---
-- name: 🤖 Get System Status for Palo Alto Devices
-  # ALWAYS define the target group for clarity and safety
-  #hosts: pa_group 
-  # ALWAYS define the required connection type for network modules
-  connection: local 
-  gather_facts: false
-
+- name: Show system status on Palo Alto Firewall via HTTPAPI with username/password
+  hosts: pa_fws
+  gather_facts: no
+  connection: httpapi
+  collections:
+    - paloaltonetworks.panos
+  vars:
+    provider:
+      ip_address: "{{ ansible_host }}"
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
   tasks:
-    - name: Run 'show system status' operational command via API
+    - name: Run 'show system state' command via API
       paloaltonetworks.panos.panos_op:
-        provider: "{{ provider }}" 
-        cmd: 'show system status'
-      # ... rest of the tasks
+        provider: "{{ provider }}"
+        cmd: show system state
+      register: system_state_output
+
+    - name: Show system state output raw
+      debug:
+        var: system_state_output.stdout
+
+    - name: Parse system state output JSON string
+      set_fact:
+        parsed_output: "{{ system_state_output.stdout | from_json }}"
+
+    - name: Show system state output prettified
+      debug:
+        msg: "{{ parsed_output | to_nice_json }}"
+
+    - name: Display model and software version
+      debug:
+        msg: "Model: {{ palo_info.model }}, Software Version: {{ palo_info.sw_version }}"
