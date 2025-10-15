@@ -21,9 +21,9 @@
       register: panos_data
 
     - name: Inspect full output structure
-      debug:
+      ansible.builtin.debug:
         var: panos_data
 
     - name: Show CPU usage only
-      debug:
+      ansible.builtin.debug:
         msg: "CPU usage: {{ panos_data.system_info.cpu_usage }}"
