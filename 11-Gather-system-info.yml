@@ -5,7 +5,7 @@
   gather_facts: false
   collections:
     - paloaltonetworks.panos
-    
+
   vars:
     provider:
       ip_address: "{{ ansible_host }}"
@@ -15,7 +15,7 @@
   tasks:
     - name: Gather facts for device
       paloaltonetworks.panos.panos_facts:
-        provider: "{{ device }}"
+        provider: "{{ provider }}"
 
     - name: Display information
       ansible.builtin.debug:
