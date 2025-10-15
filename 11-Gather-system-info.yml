@@ -25,4 +25,7 @@
           - "Hostname: {{ ansible_net_hostname }}"
           - "Version: {{ ansible_net_version }}"
           - "MgmtIP: {{ provider.ip_address}}"
+          - "Session: {{ ansible_net_session_usage}}"
+          - "Uptime: {{ ansible_net_uptime }}"
+          - "HA state: {{ ansible_net_ha_localstate }}"
 
