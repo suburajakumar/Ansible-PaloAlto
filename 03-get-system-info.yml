@@ -1,21 +1,20 @@
 ---
-- name: Create Address Object in Palo Alto via Ansible
+- name: Gather system info
   hosts: palo_firewall
   connection: httpapi
-  gather_facts: false
-  vars:
-    provider:
-      ip_address: "{{ ansible_host }}"
-      api_key: "{{ api_key }}"
   tasks:
-    - name: Get facts
+    - name: Gather facts for device
       paloaltonetworks.panos.panos_facts:
-        provider: "{{ provider }}"
-        gather_subset: ['config']
-      register: result
+        provider: "{{ device }}"
 
-    - name: Save info to file
-      local_action:
-        module: copy
-        content: "{{ result }}"
-        dest: ./panos_info.txt
+    - name: Display information
+      ansible.builtin.debug:
+        msg:
+          - "Hostname: {{ ansible_facts.net_hostname }}"
+          - "Serial: {{ ansible_facts.net_serial }}"
+          - "Model: {{ ansible_facts.net_model }}"
+          - "Version: {{ ansible_facts.net_version }}"
+          - "Uptime: {{ ansible_facts.net_uptime }}"
+          - "CPU Usage: {{ ansible_facts.net_cpu_usage }}"
+          - "Memory Usage: {{ ansible_facts.net_mem_usage }}"
+          - "Session Usage: {{ ansible_facts.net_session_usage }} / {{ ansible_facts.net_session_max }}"
