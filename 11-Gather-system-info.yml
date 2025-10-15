@@ -20,6 +20,10 @@
           - system
       register: panos_data
 
+    - name: Inspect full output structure
+      debug:
+        var: panos_data
+
     - name: Show CPU usage only
       debug:
-        msg: "CPU usage: {{ panos_data.facts.system.cpu_usage }}"
+        msg: "CPU usage: {{ panos_data.system_info.cpu_usage }}"
