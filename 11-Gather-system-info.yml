@@ -24,6 +24,5 @@
     - name: Show CPU usage
       debug:
         msg: 
-          - "Hostname: {{ ansible_facts.ansible_net_hostname }}"
-          - "Management IP: {{ ansible_facts.invocation.module_args.provider.ip_address }}"
+          - "Hostname: {{ ansible_net_hostname }}"
 
