@@ -24,5 +24,6 @@
     - name: Show CPU usage
       debug:
         msg: 
-          - "Hostname: {{ panos_data.system.ansible_net_hostname }}"
+          - "Hostname: {{ ansible_facts.ansible_net_hostname }}"
+          - "Management IP: {{ ansible_facts.invocation.module_args.provider.ip_address }}"
 
