@@ -16,7 +16,7 @@
     - name: Get system facts (CPU and session count)
       paloaltonetworks.panos.panos_facts:
         provider: "{{ provider }}"
-        gather_subset: ['system']
+        gather_subset: ['config']
       register: panos_data
     
     - name: Show CPU usage
